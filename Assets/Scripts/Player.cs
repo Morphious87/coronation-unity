@@ -10,9 +10,9 @@ public class Player : MonoBehaviour
 	public Transform cameraTransform;
 	public CharacterController controller;
 
-    public Transform CBALocation;
+	public Transform CBALocation;
 
-    // game config
+	// game config
 	[SerializeField] float acceleration;
 	[SerializeField] float deceleration;
 	[SerializeField] float walkSpeed;
@@ -25,19 +25,19 @@ public class Player : MonoBehaviour
 	[NonSerialized] public Vector3 velocity;
 	[NonSerialized] public Vector2 lookRotation;
 
-    [NonSerialized] public bool lockInput;
+	[NonSerialized] public bool lockInput;
 
-    [NonSerialized] Vector3 entryPos;
+	[NonSerialized] Vector3 entryPos;
 
 	bool bunnyHopPrevention = false;
 
-    void Update()
+	void Update()
 	{
 		if (PauseMenu.paused)
 			return;
 
-        if (lockInput)
-            return;
+		if (lockInput)
+			return;
 
 		var sprinting = Input.GetKey(KeyCode.LeftShift) ^ Persistence.settings.autoRun;
 
@@ -65,9 +65,9 @@ public class Player : MonoBehaviour
 		lookRotation += mouseDelta;
 		lookRotation = new Vector2(Mathf.Clamp(lookRotation.x, -mouseClamp, +mouseClamp), lookRotation.y);
 
-        // fix mouse look
-        if (Time.timeSinceLevelLoad < 0.5f)
-            lookRotation = Vector3.zero;
+		// fix mouse look
+		if (Time.timeSinceLevelLoad < 0.5f)
+			lookRotation = Vector3.zero;
 
 		cameraTransform.localEulerAngles = lookRotation.x * Vector3.right;
 		transform.localEulerAngles = lookRotation.y * Vector3.up;
@@ -85,7 +85,7 @@ public class Player : MonoBehaviour
 		controller.Move(velocity * Time.deltaTime * 60f);
 	}
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
+	void OnControllerColliderHit(ControllerColliderHit hit)
 	{	
 		if (hit.collider.isTrigger)
 			return;
@@ -97,32 +97,32 @@ public class Player : MonoBehaviour
 		}
 	}
 
-    void Awake()
-    {
-        entryPos = transform.position;
-    }
+	void Awake()
+	{
+		entryPos = transform.position;
+	}
 
-    public void GoToEntry()
-    {
-        controller.enabled = false;
+	public void GoToEntry()
+	{
+		controller.enabled = false;
 
-        transform.position = entryPos;
-        velocity = Vector3.zero;
-        lookRotation = Vector3.zero;
+		transform.position = entryPos;
+		velocity = Vector3.zero;
+		lookRotation = Vector3.zero;
 
-        controller.enabled = true;
-    }
+		controller.enabled = true;
+	}
 
-    public void CBA()
-    {
-        controller.enabled = false;
+	public void CBA()
+	{
+		controller.enabled = false;
 
-        transform.position = CBALocation.position;
-        velocity = Vector3.zero;
-        lookRotation = Vector3.up * 90f;
+		transform.position = CBALocation.position;
+		velocity = Vector3.zero;
+		lookRotation = Vector3.up * 90f;
 
-        controller.enabled = true;
-    }
+		controller.enabled = true;
+	}
 
 	public void TeleportTo(Transform from, Transform to)
 	{
